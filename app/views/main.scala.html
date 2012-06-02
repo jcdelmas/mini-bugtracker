@@ -11,10 +11,19 @@
         <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
     </head>
     <body>
+      <div class="navbar">
+			<div class="navbar-inner">
+				<div class="container">
+					<span class="brand">Bug Tracker</span>
+					<ul class="nav pull-right">
+						<li>
+							<a href="#">Log in</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
 		<div class="container">
-			<header>
-				<h1>Bug Tracker</h1>
-			</header>
 			<div class="content">
 				@content
 			</div>
