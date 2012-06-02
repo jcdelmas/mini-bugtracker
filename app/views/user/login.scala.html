@@ -3,7 +3,7 @@
 @import helper._
 @import helper.custom._
 
-@main("Log in") {
+@main("Log in", None) {
   
   @helper.form(action = routes.Users.authenticate, args = 'method -> "POST") {
     

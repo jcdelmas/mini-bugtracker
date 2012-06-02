@@ -1,4 +1,4 @@
-@(issue: Form[Issue])(implicit user: Option[User])
+@(issue: Form[(Long, String, String)])(implicit user: User)
 
 @import helper._
 @import helper.custom._
@@ -8,7 +8,7 @@
 }
   
 
-@main(title) {
+@main(title, Some(user)) {
   
   @helper.form(action = routes.Issues.save, args = 'method -> "POST") {
     

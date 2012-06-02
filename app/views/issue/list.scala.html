@@ -4,7 +4,7 @@
   <a href="@routes.Issues.view(issue.number)">@label</a>
 }
 
-@main("Issues") {
+@main("Issues", user) {
 
   <h2>Issues</h2>
   
@@ -16,7 +16,7 @@
       <tr>
         <th>Number</th>
         <th>Title</th>
-        <th>Description</th>
+        <th>Reporter</th>
       </tr>
 	</thead>
 	<tbody>
@@ -29,7 +29,7 @@
 			@linkToIssue(issue, issue.title)
 		</td>
         <td>
-			@linkToIssue(issue, issue.description)
+			@linkToIssue(issue, issue.user.name)
 		</td>
       </tr>
 	}

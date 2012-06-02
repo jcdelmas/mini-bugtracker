@@ -1,6 +1,6 @@
 @(issue: Issue)(implicit user: Option[User])
 
-@main("Issue " + issue.number) {
+@main("Issue " + issue.number, user) {
   
   <p>
   	<a href="@routes.Issues.list()">Retour</a>
@@ -9,6 +9,12 @@
   <h4>Title</h4>
   <p>
   	@issue.title
+  <p/>
+  
+  <h4>Reporter</h4>
+  <p>
+  	@issue.user.name 
+  	(@issue.user.email)
   <p/>
   
   <h4>description</h4>

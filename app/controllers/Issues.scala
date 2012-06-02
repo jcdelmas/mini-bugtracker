@@ -12,10 +12,23 @@ import play.api.data.validation.Constraints._
 
 object Issues extends Controller {
 
-  def UserAction(f: Option[User] => Request[AnyContent] => Result): Action[AnyContent] = {
+  def getUser(implicit request: Request[AnyContent]) = {
+    session.get(username).flatMap(id => User.findById(id.toLong))
+  }
+  
+  def UserAction(f: Option[User] => Request[AnyContent] => Result) = {
     Action { implicit request =>
-      val user = session.get(username).flatMap(id => User.findById(id.toLong))
-      f(user)(request)
+      f(getUser)(request)
+    }
+  }
+  
+  def AuthAction(f: User => Request[AnyContent] => Result) = {
+    Action { implicit request =>
+      getUser.map { user =>
+        f(user)(request)
+      }.getOrElse {
+        Unauthorized
+      }
     }
   }
   
@@ -29,23 +42,23 @@ object Issues extends Controller {
     }.getOrElse(NotFound)
   }
   
-  var issueForm: Form[Issue] = Form(
-      mapping(
+  var issueForm: Form[(Long, String, String)] = Form(
+      tuple(
           "number" -> of[Long],
           "title" -> nonEmptyText,
           "description" -> text
-      )(Issue.apply)(Issue.unapply)
+      )
   )
   
-  def create = UserAction { implicit user => implicit request =>
-    Ok(html.issue.edit(issueForm.fill(Issue(0, "", ""))))
+  def create = AuthAction { implicit user => implicit request =>
+    Ok(html.issue.edit(issueForm.fill(0, "", "")))
   }
   
-  def save = UserAction { implicit user => implicit request =>
+  def save = AuthAction { implicit user => implicit request =>
     issueForm.bindFromRequest.fold(
         errors => BadRequest(html.issue.edit(errors)),
         issue => {
-          Issue.save(issue)
+          Issue.save(Issue(0, user, issue._2, issue._3))
           Redirect(routes.Issues.list())
         }
     )
