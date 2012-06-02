@@ -1,0 +1,37 @@
+@(issue: Form[Issue])
+
+@import helper._
+@import helper.custom._
+
+@title = @{
+  if (issue("number").value != 0) { "New Issue" } else { "Edit Issue" }
+}
+  
+
+@main(title) {
+  
+  @helper.form(action = routes.Issues.save, args = 'method -> "POST", 'class -> "form-horizontal") {
+    
+    <fieldset>
+      <legend>@title</legend>
+      
+	  <input type="hidden" name="@issue("number").name" value="@issue("number").value" />
+
+      @inputText(
+	  	issue("title"), 
+	  	'_label -> "Title",
+	  	'class -> "input-xlarge"
+	  )
+      
+      @helper.textarea(
+	  	issue("description"),
+	  	'_label -> "Description",
+	  	'class -> "input-xxlarge"
+	  )
+    </fieldset>
+    <div class="form-actions">
+	  <button class="btn btn-primary" type="submit">Save</button>
+	  <a href="@routes.Issues.list()" class="btn">Cancel</a>
+	</div>
+  }
+}
