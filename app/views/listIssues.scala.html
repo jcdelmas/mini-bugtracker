@@ -1,0 +1,25 @@
+@(issues: Seq[Issue])
+
+@main("Issues") {
+
+  <h2>Issues</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Title</th>
+        <th>Description</th>
+      </tr>
+	</thead>
+	<tbody>
+	@issues.map { issue =>
+	  <tr>
+        <td>@issue.number</td>
+        <td>@issue.title</td>
+        <td>@issue.description</td>
+      </tr>
+	}
+	</tbody>
+  </table>
+
+}
