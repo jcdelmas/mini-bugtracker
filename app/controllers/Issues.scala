@@ -15,6 +15,12 @@ object Issues extends Controller {
     Ok(html.listIssues(Issue.list))
   }
   
+  def view(number: Long) = Action {
+    Issue.find(number).map { issue =>
+      Ok(html.viewIssue(issue))
+    }.getOrElse(NotFound)
+  }
+  
   var issueForm: Form[Issue] = Form(
       mapping(
           "number" -> of[Long],

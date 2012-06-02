@@ -1,5 +1,9 @@
 @(issues: Seq[Issue])
 
+@linkToIssue(issue: Issue, label: Any) = {
+  <a href="@routes.Issues.view(issue.number)">@label</a>
+}
+
 @main("Issues") {
 
   <h2>Issues</h2>
@@ -18,9 +22,15 @@
 	<tbody>
 	@issues.map { issue =>
 	  <tr>
-        <td>@issue.number</td>
-        <td>@issue.title</td>
-        <td>@issue.description</td>
+        <td>
+			@linkToIssue(issue, issue.number)
+		</td>
+        <td>
+			@linkToIssue(issue, issue.title)
+		</td>
+        <td>
+			@linkToIssue(issue, issue.description)
+		</td>
       </tr>
 	}
 	</tbody>

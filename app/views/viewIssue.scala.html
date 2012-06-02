@@ -1,0 +1,18 @@
+@(issue: Issue)
+
+@main("Issue " + issue.number) {
+  
+  <p>
+  	<a href="@routes.Issues.list()">Retour</a>
+  </p>
+  
+  <h4>Title</h4>
+  <p>
+  	@issue.title
+  <p/>
+  
+  <h4>description</h4>
+  <p>
+  	@issue.description
+  <p/>
+}
