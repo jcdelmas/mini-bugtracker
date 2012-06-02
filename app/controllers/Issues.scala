@@ -12,12 +12,12 @@ import play.api.data.validation.Constraints._
 object Issues extends Controller {
 
   def list = Action {
-    Ok(html.listIssues(Issue.list))
+    Ok(html.issue.list(Issue.list))
   }
   
   def view(number: Long) = Action {
     Issue.find(number).map { issue =>
-      Ok(html.viewIssue(issue))
+      Ok(html.issue.view(issue))
     }.getOrElse(NotFound)
   }
   
@@ -30,12 +30,12 @@ object Issues extends Controller {
   )
   
   def create = Action {
-    Ok(html.editIssue(issueForm.fill(Issue(0, "", ""))))
+    Ok(html.issue.edit(issueForm.fill(Issue(0, "", ""))))
   }
   
   def save = Action { implicit request =>
     issueForm.bindFromRequest.fold(
-        errors => BadRequest(html.editIssue(errors)),
+        errors => BadRequest(html.issue.edit(errors)),
         issue => {
           Issue.save(issue)
           Redirect(routes.Issues.list())
