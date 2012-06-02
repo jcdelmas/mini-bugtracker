@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String)(content: Html)(implicit user: Option[User] = None)
 
 <!DOCTYPE html>
 
@@ -16,9 +16,18 @@
 				<div class="container">
 					<span class="brand">Bug Tracker</span>
 					<ul class="nav pull-right">
+					@user.map { u =>
+						<li>
+							<a href="#">@u.name</a>
+						</li>
+					  	<li>
+							<a href="@routes.Users.logout">Log out</a>
+						</li>
+					}.getOrElse {
 						<li>
 							<a href="@routes.Users.showLoginForm">Log in</a>
 						</li>
+					}
 					</ul>
 				</div>
 			</div>

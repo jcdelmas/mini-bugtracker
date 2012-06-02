@@ -1,6 +1,7 @@
 package controllers
 
 import play.api.mvc._
+import play.api.mvc.Security._
 import models._
 import views._
 
@@ -11,11 +12,18 @@ import play.api.data.validation.Constraints._
 
 object Issues extends Controller {
 
-  def list = Action {
+  def UserAction(f: Option[User] => Request[AnyContent] => Result): Action[AnyContent] = {
+    Action { implicit request =>
+      val user = session.get(username).flatMap(id => User.findById(id.toLong))
+      f(user)(request)
+    }
+  }
+  
+  def list = UserAction { implicit user => request =>
     Ok(html.issue.list(Issue.list))
   }
   
-  def view(number: Long) = Action {
+  def view(number: Long) = UserAction { implicit user => request =>
     Issue.find(number).map { issue =>
       Ok(html.issue.view(issue))
     }.getOrElse(NotFound)
@@ -29,11 +37,11 @@ object Issues extends Controller {
       )(Issue.apply)(Issue.unapply)
   )
   
-  def create = Action {
+  def create = UserAction { implicit user => implicit request =>
     Ok(html.issue.edit(issueForm.fill(Issue(0, "", ""))))
   }
   
-  def save = Action { implicit request =>
+  def save = UserAction { implicit user => implicit request =>
     issueForm.bindFromRequest.fold(
         errors => BadRequest(html.issue.edit(errors)),
         issue => {

@@ -1,4 +1,4 @@
-@(issue: Issue)
+@(issue: Issue)(implicit user: Option[User])
 
 @main("Issue " + issue.number) {
   

@@ -12,6 +12,7 @@ GET		/issues/:number				controllers.Issues.view(number: Long)
 # Users
 GET		/login						controllers.Users.showLoginForm
 POST	/login						controllers.Users.authenticate
+GET		/login/logout				controllers.Users.logout
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -24,6 +24,20 @@ object User {
     }
   }
   
+  def findById(id: Long) = {
+    DB.withConnection { implicit c =>
+      SQL(
+        """
+          select *
+          from user_
+          where id = {id} 
+        """
+      )
+      .on("id" -> id)
+      .as(user.singleOpt)
+    }
+  }
+  
   def findByEmail(email: String) = {
     DB.withConnection { implicit c =>
       SQL(

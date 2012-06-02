@@ -1,4 +1,4 @@
-@(issues: Seq[Issue])
+@(issues: Seq[Issue])(implicit user: Option[User])
 
 @linkToIssue(issue: Issue, label: Any) = {
   <a href="@routes.Issues.view(issue.number)">@label</a>
