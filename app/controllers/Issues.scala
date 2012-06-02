@@ -7,9 +7,6 @@ import views._
 object Issues extends Controller {
 
   def list = Action {
-    Ok(html.listIssues(List(
-        Issue(100, "Bug1", "Lorem Ipsum"),
-        Issue(101, "Bug2", "Lorem Ipsum")
-    )))
+    Ok(html.listIssues(Issue.list))
   }
 }
