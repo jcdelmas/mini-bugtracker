@@ -1,0 +1,34 @@
+@(login: Form[(String, String)], errorMsg: Option[String] = None)
+
+@import helper._
+@import helper.custom._
+
+@main("Log in") {
+  
+  @helper.form(action = routes.Users.authenticate, args = 'method -> "POST") {
+    
+    <fieldset>
+      <legend>Log in</legend>
+      
+      @errorMsg.map { msg =>
+        <div class="alert alert-error">@msg</div>
+      }
+      
+      @inputText(
+	  	login("email"), 
+	  	'_label -> "Email",
+	  	'class -> "input-xlarge"
+	  )
+	  
+      @inputPassword(
+	  	login("password"), 
+	  	'_label -> "Password",
+	  	'class -> "input-xlarge"
+	  )
+      
+    </fieldset>
+    <div class="form-actions">
+	  <button class="btn btn-primary" type="submit">Log in</button>
+	</div>
+  }
+}
