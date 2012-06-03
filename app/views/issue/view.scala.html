@@ -6,11 +6,7 @@
 @import java.text.DateFormat
 @import java.util.Locale
 
-@main("Issue " + issue.number, user) {
-  
-  <p>
-  	<a href="@routes.Issues.list()">Retour</a>
-  </p>
+@main("Issue " + issue.number, user, Some(routes.Issues.list())) {
   
   <h2>Issue @issue.number</h2>
   

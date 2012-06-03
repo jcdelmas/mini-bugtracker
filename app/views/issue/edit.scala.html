@@ -8,7 +8,7 @@
 }
   
 
-@main(title, Some(user)) {
+@main(title, Some(user), Some(routes.Issues.list())) {
   
   @helper.form(action = routes.Issues.save, args = 'method -> "POST") {
     

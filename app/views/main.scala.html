@@ -1,4 +1,4 @@
-@(title: String, user: Option[User])(content: Html)
+@(title: String, user: Option[User], back: Option[Call] = None)(content: Html)
 
 <!DOCTYPE html>
 
@@ -16,6 +16,12 @@
 				<div class="container">
 					<span class="brand">Bug Tracker</span>
 					<ul class="nav pull-right">
+					@back.map { backURL =>
+						<li>
+							<a href="@backURL">Back</a>
+						</li>
+					    <li class="divider-vertical"></li>
+					}
 					@user.map { u =>
 						<li>
 							<a href="#">@u.name</a>
