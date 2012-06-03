@@ -22,8 +22,24 @@ create table issue (
 );
 
 create sequence issue_seq start with 100;
+
+create table comment_ (
+    id bigint(20) not null primary key,
+    issue_number bigint(20) not null,
+    user_id bigint(20) not null,
+    text varchar(1024) not null,
+    timestamp_ timestamp not null,
+    foreign key (issue_number) references issue (number_),
+    foreign key (user_id) references user_ (id)
+);
+
+create sequence comment_seq start with 100;
  
 # --- !Downs
+ 
+drop table comment_;
+
+drop sequence if exists comment_seq;
  
 drop table issue;
 

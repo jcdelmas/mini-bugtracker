@@ -3,3 +3,7 @@
 	margin: 1em 0;
     text-align: right;
 }
+
+.comments dd {
+	margin-bottom: 10px;
+}

@@ -8,6 +8,7 @@ GET		/issues						controllers.Issues.list
 POST	/issues						controllers.Issues.save
 GET		/issues/new					controllers.Issues.create
 GET		/issues/:number				controllers.Issues.view(number: Long)
+POST	/issues/:number/comments	controllers.Issues.saveComment(number: Long)
 
 # Users
 GET		/login						controllers.Users.showLoginForm

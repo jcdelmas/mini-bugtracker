@@ -1,10 +1,18 @@
-@(issue: Issue)(implicit user: Option[User])
+@(issue: Issue, comments: Seq[Comment], commentForm: Form[String])(implicit user: Option[User])
+
+@import helper._
+@import helper.custom._
+
+@import java.text.DateFormat
+@import java.util.Locale
 
 @main("Issue " + issue.number, user) {
   
   <p>
   	<a href="@routes.Issues.list()">Retour</a>
   </p>
+  
+  <h2>Issue @issue.number</h2>
   
   <h4>Title</h4>
   <p>
@@ -17,8 +25,35 @@
   	(@issue.user.email)
   <p/>
   
-  <h4>description</h4>
+  <h4>Description</h4>
   <p>
   	@issue.description
   <p/>
+  
+  <h4>Comments</h4>
+  <dl class="comments">
+  @comments.map { comment =>
+  	<dt>
+  	  @comment.user.name 
+  	  -
+  	  @DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.US).format(comment.timestamp)
+  	</dt>
+  	<dd>
+  	  @comment.text
+  	</dd>
+  }
+  </dl>
+  
+  @user.map { u =>
+    @helper.form(action = routes.Issues.saveComment(issue.number), args = 'method -> "POST", 'class -> "well") {
+    
+      @helper.textarea(
+	    commentForm("text"),
+	    '_label -> "Add a Comment",
+	    'class -> "input-xlarge"
+	  )
+	  
+	  <button class="btn" type="submit">Submit</button>
+    }
+  }
 }

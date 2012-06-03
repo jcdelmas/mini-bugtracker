@@ -36,13 +36,25 @@ object Issues extends Controller {
     Ok(html.issue.list(Issue.list))
   }
   
-  def view(number: Long) = UserAction { implicit user => request =>
-    Issue.find(number).map { issue =>
-      Ok(html.issue.view(issue))
+  def view(number: Long) = doView(number, commentForm.fill(""), Ok)
+  
+  def doView(issueNumber: Long, form: => Form[String], status: Status) = UserAction { implicit user => request =>
+    Issue.find(issueNumber).map { issue =>
+      status(
+          html.issue.view(
+              issue, 
+              Comment.findByIssue(issue.number),
+              form
+          )
+      )
     }.getOrElse(NotFound)
   }
   
-  var issueForm: Form[(Long, String, String)] = Form(
+  val commentForm = Form(
+      single("text" -> nonEmptyText)
+  ) 
+  
+  val issueForm = Form(
       tuple(
           "number" -> of[Long],
           "title" -> nonEmptyText,
@@ -60,6 +72,16 @@ object Issues extends Controller {
         issue => {
           Issue.save(Issue(0, user, issue._2, issue._3))
           Redirect(routes.Issues.list())
+        }
+    )
+  }
+  
+  def saveComment(issueNumber: Long) = AuthAction { implicit user => implicit request =>
+    commentForm.bindFromRequest.fold(
+        errors => doView(issueNumber, errors, BadRequest)(request),
+        commentText => {
+          Comment.save(issueNumber, user, commentText)
+          Redirect(routes.Issues.view(issueNumber))
         }
     )
   }
