@@ -3,17 +3,18 @@
 # ~~~~
 
 # Issues
-GET     /                           controllers.Application.index
-GET		/issues						controllers.Issues.list
-POST	/issues						controllers.Issues.save
-GET		/issues/new					controllers.Issues.create
-GET		/issues/:number				controllers.Issues.view(number: Long)
-POST	/issues/:number/comments	controllers.Issues.saveComment(number: Long)
+GET     /                           	controllers.Application.index
+GET		/issues							controllers.Issues.list
+POST	/issues							controllers.Issues.save
+GET		/issues/new						controllers.Issues.create
+GET		/issues/:number					controllers.Issues.view(number: Long)
+POST	/issues/:number/comments		controllers.Issues.saveComment(number: Long)
+POST	/json/issues/:number/comments	controllers.Issues.saveJsonComment(number: Long)
 
 # Users
-GET		/login						controllers.Users.showLoginForm
-POST	/login						controllers.Users.authenticate
-GET		/login/logout				controllers.Users.logout
+GET		/login							controllers.Users.showLoginForm
+POST	/login							controllers.Users.authenticate
+GET		/login/logout					controllers.Users.logout
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file               	controllers.Assets.at(path="/public", file)

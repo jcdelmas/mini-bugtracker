@@ -85,4 +85,36 @@ object Issues extends Controller {
         }
     )
   }
+  
+  def saveJsonComment(issueNumber: Long) = Action { implicit request =>
+    Issue.find(issueNumber).map { issue =>
+      request.body.asJson.map { json =>
+        (json \ "authorEmail").asOpt[String].map { authorEmail =>
+          (json \ "name").asOpt[String].map { commitName =>
+            (json \ "message").asOpt[String].map { commitMsg =>
+              User.findByEmail(authorEmail).map { user =>
+                val comment = "Issue committed " +
+                		"(commit " + commitName + ")\n\n" +
+                		commitMsg
+                Comment.save(issueNumber, user, comment);
+                NoContent
+              }.getOrElse {
+                BadRequest("No user found with email $authorEmail")
+              }
+            }.getOrElse {
+              BadRequest("Missing 'message' attribute")
+            }
+          }.getOrElse {
+            BadRequest("Missing 'name' attribute")
+          }
+        }.getOrElse {
+          BadRequest("Missing 'authorEmail' attribute")
+        }
+      }.getOrElse {
+        BadRequest("Expecting Json data")
+      }
+    }.getOrElse {
+      NotFound("No issue found with number $issueNumber")
+    }
+  }
 }
