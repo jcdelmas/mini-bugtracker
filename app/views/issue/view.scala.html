@@ -38,7 +38,10 @@
   	  @DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.US).format(comment.timestamp)
   	</dt>
   	<dd>
-  	  @comment.text
+  	  @comment.text.split('\n').map { token =>
+  	  	@token
+  	  	<br />
+  	  }
   	</dd>
   }
   </dl>
